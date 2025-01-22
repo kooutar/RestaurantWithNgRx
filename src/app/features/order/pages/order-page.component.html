@@ -18,19 +18,8 @@
     <!-- Main Content -->
     <ng-container *ngIf="order$ | async as order">
 
-      <!-- Empty State -->
-      <div *ngIf="!order.items || order.items.length === 0" class="bg-white rounded-xl shadow-md p-12 text-center">
-        <div class="text-6xl mb-6">🍽️</div>
-        <h2 class="text-2xl font-titre font-bold text-charbon mb-2">Votre panier est vide</h2>
-        <p class="text-gris-texte mb-8">Découvrez nos délicieux plats et commencez votre commande !</p>
-        <a routerLink="/menu"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-or text-white font-body font-semibold rounded-lg hover:bg-or-dark transition-colors shadow-md">
-          Voir le Menu
-        </a>
-      </div>
-
-      <!-- Cart Content -->
-      <div *ngIf="order.items && order.items.length > 0" class="flex flex-col lg:flex-row gap-8">
+      <!-- Empty State / Cart Switch -->
+      <div *ngIf="order.items && order.items.length > 0; else emptyCart" class="flex flex-col lg:flex-row gap-8">
 
         <!-- Items List -->
         <div class="flex-grow">
@@ -129,6 +118,20 @@
         </div>
 
       </div>
+
+      <!-- Empty State Template -->
+      <ng-template #emptyCart>
+        <div class="bg-white rounded-xl shadow-md p-12 text-center">
+          <div class="text-6xl mb-6">🍽️</div>
+          <h2 class="text-2xl font-titre font-bold text-charbon mb-2">Votre panier est vide</h2>
+          <p class="text-gris-texte mb-8">Découvrez nos délicieux plats et commencez votre commande !</p>
+          <a routerLink="/menu"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-or text-white font-body font-semibold rounded-lg hover:bg-or-dark transition-colors shadow-md">
+            Voir le Menu
+          </a>
+        </div>
+      </ng-template>
+
     </ng-container>
   </div>
 </div>

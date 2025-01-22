@@ -79,7 +79,17 @@ export const orderFeature = createFeature({
     // Clear Orders
     on(orderActions.clearOrders, (state) => ({
       ...state,
-      order: null,
+      isLoading: true
+    })),
+    on(orderActions.clearOrdersSuccess, (state, { order }) => ({
+      ...state,
+      isLoading: false,
+      order,
+    })),
+    on(orderActions.clearOrdersFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error
     })),
   ),
 });
