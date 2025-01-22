@@ -13,6 +13,7 @@ export class MenuEffects {
   private actions$ = inject(Actions);
   private menuService = inject(MenuApiService);
   private localStorageService = inject(LocalStorageService<MenuItem[]>);
+  private store = inject(Store);
 
   private readonly MENU_STORAGE_KEY = 'restaurant_menu';
 
@@ -52,5 +53,5 @@ export class MenuEffects {
     { dispatch: false }
   );
 
-  constructor(private store: Store) { }
+  constructor() { }
 }
