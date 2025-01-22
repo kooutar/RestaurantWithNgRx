@@ -114,6 +114,14 @@
                 {{ item.price | currency:'EUR' }}
               </span>
               <span class="text-2xl" *ngIf="!item.price">–</span>
+
+              <button
+                (click)="addToCart(item)"
+                [disabled]="!item.disponible"
+                class="px-4 py-2 bg-vert text-white font-body font-semibold rounded-lg shadow-md hover:bg-vert/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                Ajouter
+              </button>
             </div>
           </div>
         </div>
