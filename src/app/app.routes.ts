@@ -7,6 +7,11 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'menu',
+        pathMatch: 'full'
+      },
+      {
         path: 'menu',
         loadChildren: () =>
           import('./features/menu/menu.routes').then(m => m.MENU_ROUTES)
