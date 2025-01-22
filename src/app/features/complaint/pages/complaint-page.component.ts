@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 
 import * as ComplaintActions from '../store/complaint.actions';
 import {
@@ -23,6 +24,12 @@ import { Complaint, CreateComplaintDto, ComplaintStatus, ComplaintPriority } fro
       <div class="mb-8">
         <h1 class="text-4xl font-titre text-charbon mb-2">Gestion des réclamations</h1>
         <p class="text-gris-texte">Gérez les réclamations de vos clients de manière efficace</p>
+      </div>
+
+      <!-- Toast Notification -->
+      <div *ngIf="showSuccessToast()" class="fixed top-24 right-4 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg animate-fade-in-down flex items-center" role="alert">
+        <strong class="font-bold mr-2">Succès!</strong>
+        <span class="block sm:inline">Votre réclamation a été envoyée.</span>
       </div>
 
       <!-- Statistiques -->
@@ -278,6 +285,7 @@ export class ComplaintPageComponent implements OnInit {
   complaints = signal<Complaint[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  showSuccessToast = signal(false);
   stats = signal({ total: 0, pending: 0, inProgress: 0, resolved: 0, highPriority: 0, resolvedPercentage: 0 });
 
   searchTerm = '';
@@ -294,11 +302,19 @@ export class ComplaintPageComponent implements OnInit {
     orderReference: ''
   };
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private actions$: Actions) {
     this.store.select(selectFilteredComplaints).subscribe(c => this.complaints.set(c));
     this.store.select(selectComplaintsLoading).subscribe(l => this.loading.set(l));
     this.store.select(selectComplaintsError).subscribe(e => this.error.set(e));
     this.store.select(selectComplaintsStats).subscribe(s => this.stats.set(s));
+
+    // Listen for success action to show toast
+    this.actions$.pipe(
+      ofType(ComplaintActions.createComplaintSuccess)
+    ).subscribe(() => {
+      this.showSuccessToast.set(true);
+      setTimeout(() => this.showSuccessToast.set(false), 3000); // Hide after 3 seconds
+    });
   }
 
   ngOnInit(): void {
