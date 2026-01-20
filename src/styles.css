@@ -1,3 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+/* 🎨 Design tokens (Tailwind v4) */
+@theme {
+  --color-charbon: #2c2c2c;
+  --color-or: #d4a574;
+  --color-or-dark: #c49563;
+  --color-vert: #6b8e23;
+  --color-rouge: #c44536;
+  --color-gris-texte: #555555;
+  --color-creme: #f8f8f8;
+
+  --font-titre: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* 🌍 Styles globaux */
+@layer base {
+  body {
+    @apply bg-creme text-gris-texte font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-titre text-charbon;
+  }
+}
