@@ -5,7 +5,7 @@ export const orderActions = createActionGroup({
   source: 'Order',
   events: {
     'Load Order': emptyProps(),
-    'Load Order Success': props<{ orders: Order }>(),
+    'Load Order Success': props<{ order: Order }>(),
     'Load Order Failure': props<{ error: string }>(),
 
     'Add Item': props<{ platId: string; quantity: number }>(),
