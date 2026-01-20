@@ -1,0 +1,134 @@
+<!-- src/app/components/menu-list/menu-list.component.html -->
+<div class="min-h-screen bg-creme">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <header class="mb-8">
+      <h1 class="text-4xl md:text-5xl font-titre font-bold text-charbon mb-4">
+        Menu des Plats
+      </h1>
+      
+      <!-- Stats -->
+      <div class="mb-6" *ngIf="(totalCount$ | async) as total">
+        <span class="inline-flex items-center px-4 py-2 rounded-full bg-or text-white font-body font-semibold text-sm shadow-md">
+          {{ availableCount$ | async }} disponibles / {{ total }} plats
+        </span>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <div class="relative">
+            <input 
+              type="checkbox"
+              [checked]="showOnlyAvailable$ | async"
+              (change)="toggleFilter($any($event.target).checked)"
+              class="sr-only peer"
+            />
+            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-or/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-vert"></div>
+          </div>
+          <span class="font-body text-charbon font-medium">
+            Afficher uniquement les plats disponibles
+          </span>
+        </label>
+        
+        <button 
+          (click)="reload()"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-vert hover:bg-vert/90 text-white font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Recharger
+        </button>
+      </div>
+    </header>
+
+    <!-- Loading State -->
+    <div *ngIf="loading$ | async" class="flex flex-col items-center justify-center py-20">
+      <div class="w-16 h-16 border-4 border-creme border-t-or rounded-full animate-spin mb-4"></div>
+      <p class="text-gris-texte font-body text-lg">Chargement des plats...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error$ | async as error" class="max-w-md mx-auto">
+      <div class="bg-red-50 border-2 border-rouge rounded-xl p-6 text-center shadow-lg">
+        <div class="text-rouge text-5xl mb-3">❌</div>
+        <p class="text-charbon font-body font-medium mb-4">{{ error }}</p>
+        <button 
+          (click)="reload()"
+          class="px-6 py-3 bg-rouge hover:bg-rouge/90 text-white font-body font-semibold rounded-lg transition-colors duration-200"
+        >
+          Réessayer
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Items Grid -->
+    <div *ngIf="!(loading$ | async) && !(error$ | async)">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          *ngFor="let item of menuItems$ | async" 
+          class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+          [class.opacity-60]="!item.disponible"
+        >
+          <!-- Image Container -->
+          <div class="relative h-56 overflow-hidden bg-gray-100">
+            <img 
+              [src]="item.image || 'assets/placeholder.jpg'" 
+              [alt]="item.name"
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+            />
+            
+            <!-- Availability Badge -->
+            <span 
+              class="absolute top-3 right-3 px-3 py-1.5 rounded-full text-white text-sm font-body font-semibold shadow-lg"
+              [class.bg-vert]="item.disponible"
+              [class.bg-rouge]="!item.disponible"
+            >
+              {{ item.disponible ? '✓ Disponible' : '✗ Indisponible' }}
+            </span>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            <h3 class="text-2xl font-titre font-bold text-charbon mb-2">
+              {{ item.name }}
+            </h3>
+            
+            <p class="text-sm text-gris-texte font-body mb-3 flex items-center gap-2" *ngIf="item.category">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+              </svg>
+              {{ item.category }}
+            </p>
+            
+            <p class="text-gris-texte font-body text-sm leading-relaxed mb-4 line-clamp-3" *ngIf="item.description">
+              {{ item.description }}
+            </p>
+            
+            <!-- Footer -->
+            <div class="pt-4 border-t border-gray-200 flex items-center justify-between">
+              <span class="text-3xl font-titre font-bold text-or" *ngIf="item.price">
+                {{ item.price | currency:'EUR':'symbol':'1.2-2':'fr' }}
+              </span>
+              <span class="text-2xl" *ngIf="!item.price">–</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div 
+        *ngIf="(menuItems$ | async)?.length === 0" 
+        class="text-center py-20"
+      >
+        <div class="text-6xl mb-4">🍽️</div>
+        <p class="text-gris-texte font-body text-xl">
+          Aucun plat disponible pour le moment
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

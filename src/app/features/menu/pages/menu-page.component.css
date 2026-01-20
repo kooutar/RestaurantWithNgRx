@@ -1,0 +1,12 @@
+/* src/app/components/menu-list/menu-list.component.css */
+
+/* Import des polices Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Styles additionnels si nécessaire */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
