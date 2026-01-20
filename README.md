@@ -19,6 +19,7 @@ Mettre en place :
 
 ## 🧱 Architecture globale du projet
 
+```bash
 src/
  ├─ app/
  │   ├─ core/
@@ -32,7 +33,7 @@ src/
  │   └─ app.config.ts
  ├─ styles.css
  └─ index.html
-
+```
 
 
 ---
@@ -42,13 +43,15 @@ src/
 ### 🔹 `app/core/` — Socle applicatif (Singletons)
 Contient tous les éléments globaux et partagés dans toute l’application.
 
+
+```bash
 core/
 ├─ services/
 │ ├─ menu-api.service.ts
 │ └─ local-storage.service.ts
 └─ layout/
 └─ main-layout.component.ts
-
+```
 
 #### ✅ `menu-api.service.ts`
 - Service centralisé pour récupérer les plats depuis une API externe  
@@ -69,6 +72,7 @@ core/
 ### 🔹 `app/shared/` — Éléments réutilisables
 Contient les éléments mutualisés de l’application.
 
+```bash
 shared/
 ├─ models/
 │ ├─ base.model.ts
@@ -76,7 +80,7 @@ shared/
 ├─ ui/
 ├─ pipes/
 └─ directives/
-
+```
 
 #### ✅ `base.model.ts`
 - Interface de base pour les entités métier
@@ -96,6 +100,7 @@ Chaque fonctionnalité est :
 - Lazy-loaded
 - Scalable
 
+```bash
 features/
 ├─ menu/
 │ ├─ pages/
@@ -104,16 +109,17 @@ features/
 │ └─ menu.routes.ts
 ├─ order/
 └─ complaint/
-
+```
 
 ---
 
 ### 🔹 `app/store/` — Store global NgRx
 
+```bash
  store/
  ├─ app.state.ts
  └─ index.ts
-
+```
 
 - Centralise l’état global de l’application
 - Facilite l’extension future du store
