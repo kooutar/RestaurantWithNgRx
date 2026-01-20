@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Routes } from '@angular/router';
 
-@Component({
-  selector: 'app-menu-page',
-  standalone: true,
-  template: `
-    <h2>Menu</h2>
-    <p>Menu feature works!</p>
-  `
-})
-export class MenuPageComponent {}
+export const MENU_ROUTES: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/menu-page.component')
+        .then(m => m.MenuPageComponent)
+  }
+];
