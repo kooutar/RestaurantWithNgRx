@@ -1,0 +1,25 @@
+import { createActionGroup, emptyProps, props } from "@ngrx/store";
+import { Order } from "../order";
+
+export const orderActions = createActionGroup({
+  source: 'Order',
+  events: {
+    'Load Order': emptyProps(),
+    'Load Order Success': props<{ order: Order }>(),
+    'Load Order Failure': props<{ error: string }>(),
+
+    'Add Item': props<{ platId: string; quantity: number }>(),
+    'Add Item Success': props<{ order: Order }>(),
+    'Add Item Failure': props<{ error: string }>(),
+
+    'Remove Item': props<{ platId: string }>(),
+    'Remove Item Success': props<{ order: Order }>(),
+    'Remove Item Failure': props<{ error: string }>(),
+
+    'update Item Quantity': props<{ platId: string; quantity: number }>(),
+    'Update Item Quantity Success': props<{ order: Order }>(),
+    'Update Item Quantity Failure': props<{ error: string }>(),
+
+    'Clear Orders': emptyProps(),
+  },
+});

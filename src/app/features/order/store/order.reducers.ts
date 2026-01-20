@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { OrderState } from "../order-state";
-import { orderActions } from "./actions";
+import { OrderState } from "./order.state";
+import { orderActions } from "./order.actions";
 
 
 export const initialOrderState: OrderState = {

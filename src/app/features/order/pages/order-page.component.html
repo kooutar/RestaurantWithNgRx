@@ -1,0 +1,32 @@
+<h1>Order</h1>
+@if (isLoading$|async) {
+  <div>Loading...</div>
+}
+@if(error$|async; as error) {
+  <div class="error">Error: {{ error }}</div>
+}
+@if (order$|async; as order) {
+  @if(order) {
+    <div>
+    <h2>Order Details</h2>
+    <p>Order ID: {{ order.orderId }}</p>
+    <ul>
+      @for (item of order.items; track item) {
+        <li>
+          {{ item.platId }} - Quantity: {{ item.quantity }}
+        </li>
+        <button (click)="removeItem(item.platId)">Remove Item</button>
+      }
+    </ul>
+  </div>
+  }
+}
+@if (totalItems$| async; as totalItems) {
+  <div>Total Items in Order: {{ totalItems }}</div>
+}
+@if (totalPrice$ | async; as totalPrice) {
+  <div>Total Price: {{ totalPrice }}</div>
+}
+<button (click)="addItem('id4', 1)">Add Item</button><br>
+<br>
+<button (click)="clearOrder()">Clear Order</button>

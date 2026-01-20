@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { delay, Observable, of } from "rxjs";
-import { Order } from "./order";
+import { Order } from "../../features/order/order";
 
 @Injectable({providedIn: 'root'})
 export class OrderService {
