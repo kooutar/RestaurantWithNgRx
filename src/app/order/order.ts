@@ -44,7 +44,11 @@ export interface ApiResponse {
   pagination: Pagination;
 }
 
+interface OrderItem {
+  platId: string;
+  quantity: number;
+}
 export interface Order {
   orderId: string;
-  items: Plat[];
+  items: OrderItem[];
 }
