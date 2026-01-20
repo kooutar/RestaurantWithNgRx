@@ -1,3 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+/* 🌍 Styles globaux de l'application */
+@layer base {
+  body {
+    @apply bg-creme text-gris-texte font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-titre text-charbon;
+  }
+}

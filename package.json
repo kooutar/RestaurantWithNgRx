@@ -43,6 +43,7 @@
     "@angular/build": "^21.0.4",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
+    "@ngneat/tailwind": "^7.0.3",
     "@ngrx/effects": "^21.0.1",
     "@ngrx/store-devtools": "^21.0.1",
     "@tailwindcss/postcss": "^4.1.18",
