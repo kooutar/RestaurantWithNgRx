@@ -35,11 +35,13 @@ export const appConfig: ApplicationConfig = {
     provideEffects(
       MenuEffects,
       ComplaintEffects,
-      loadOrderEffect,
-      addItemEffect,
-      removeItemEffect,
-      updateItemQuantityEffect,
-      clearOrdersEffect
+      {
+        loadOrderEffect,
+        addItemEffect,
+        removeItemEffect,
+        updateItemQuantityEffect,
+        clearOrdersEffect
+      }
     ),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
   ]
