@@ -7,6 +7,7 @@ import { map, Observable } from 'rxjs';
  * (basée sur l'API externe + champ disponible ajouté)
  */
 export interface MenuItem {
+img: any;
   id?: string;
   name: string;
   description?: string;
