@@ -117,6 +117,33 @@
             </div>
           </div>
         </div>
+
+        <!-- Pagination -->
+    <div class="mt-12 flex items-center justify-center gap-4">
+      <button 
+        (click)="prevPage()"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Précédent
+      </button>
+      
+      <span class="px-6 py-3 bg-or text-white font-body font-bold rounded-lg shadow-md text-lg">
+        Page {{ currentPage$ | async }}
+      </span>
+      
+      <button 
+        (click)="nextPage()"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
+      >
+        Suivant
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
       </div>
 
       <!-- Empty State -->

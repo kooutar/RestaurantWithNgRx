@@ -5,13 +5,18 @@ export interface MenuState {
   loading: boolean;
   error: string | null;
   showOnlyAvailable: boolean;
+  currentPage: number;      // <- page actuelle
+  itemsPerPage: number;
 }
 
 export const initialMenuState: MenuState = {
   items: [],
   loading: false,
   error: null,
-  showOnlyAvailable: false
+  showOnlyAvailable: false,
+  currentPage: 1,
+  itemsPerPage: 6, 
+  
 };
 
 // Ajout de l'interface pour l'AppState
