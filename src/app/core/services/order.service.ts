@@ -29,15 +29,17 @@ export class OrderService {
   }
 
   /**
-   * Adds an item to the order with the specified platId and quantity.
+   * Adds an item to the order with the specified platId, quantity, price, and optional name.
    * @param platId ID of the item to be added to the order
    * @param quantity Quantity of the item to be added
-   * @returns Observable of updated Order after adding the item with the given platId and quantity
+   * @param price Price of the item from menu
+   * @param name Optional name of the item for display
+   * @returns Observable of updated Order after adding the item
    */
-  addItem(platId: string, quantity: number): Observable<Order> {
+  addItem(platId: string, quantity: number, price: number, name?: string): Observable<Order> {
     const updatedOrder: Order = {
       ...this.order,
-      items: [...this.order.items, { platId, quantity }],
+      items: [...this.order.items, { platId, quantity, price, name }],
     };
 
     return this.updateAndStoreOrder(updatedOrder);
@@ -61,14 +63,14 @@ export class OrderService {
    * Updates the quantity of a specific item in the order.
    * @param platId ID of the item to be updated
    * @param quantity New quantity for the item
-   * @returns Observable of updated Order after updating the quantity of the item with the given platId
+   * @returns Observable of updated Order after updating the quantity
    */
   updateItemQuantity(platId: string, quantity: number): Observable<Order> {
     const updatedOrder: Order = {
       ...this.order,
-      items: [
-        ...this.order.items.map((item) => (item.platId === platId ? { platId, quantity } : item)),
-      ],
+      items: this.order.items.map((item) =>
+        item.platId === platId ? { ...item, quantity } : item
+      ),
     };
     return this.updateAndStoreOrder(updatedOrder);
   }
