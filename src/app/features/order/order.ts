@@ -47,6 +47,8 @@ export interface ApiResponse {
 interface OrderItem {
   platId: string;
   quantity: number;
+  price: number;
+  name?: string;
 }
 export interface Order {
   orderId: string;
