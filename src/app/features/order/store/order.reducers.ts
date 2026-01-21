@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { OrderState } from "./order.state";
 import { orderActions } from "./order.actions";
 
@@ -7,8 +7,6 @@ export const initialOrderState: OrderState = {
   order: null,
   isLoading: false,
   error: null,
-  totalItems: 0,
-  totalPrice: 0,
 }
 
 export const orderFeature = createFeature({
@@ -24,8 +22,6 @@ export const orderFeature = createFeature({
       ...state,
       isLoading: false,
       order: action.order,
-      totalItems: action.order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: action.order.items.reduce((total, item) => total + (item.quantity * 10), 0),
     })),
     on(orderActions.loadOrderFailure, (state, action) => ({
       ...state,
@@ -42,8 +38,6 @@ export const orderFeature = createFeature({
       ...state,
       isLoading: false,
       order,
-      totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
     })),
     on(orderActions.addItemFailure, (state, { error }) => ({
       ...state,
@@ -60,8 +54,6 @@ export const orderFeature = createFeature({
       ...state,
       isLoading: false,
       order,
-      totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
     })),
     on(orderActions.removeItemFailure, (state, { error }) => ({
       ...state,
@@ -78,8 +70,6 @@ export const orderFeature = createFeature({
       ...state,
       isLoading: false,
       order,
-      totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
     })),
     on(orderActions.updateItemQuantityFailure, (state, { error }) => ({
       ...state,
@@ -90,8 +80,6 @@ export const orderFeature = createFeature({
     on(orderActions.clearOrders, (state) => ({
       ...state,
       order: null,
-      totalItems: 0,
-      totalPrice: 0,
     })),
   ),
 });
@@ -104,6 +92,15 @@ export const {
   selectIsLoading,
   selectError,
   selectOrder,
-  selectTotalItems,
-  selectTotalPrice
 } = orderFeature;
+
+// Computed selectors (best practice: calculations in selectors, not reducers)
+export const selectComputedTotalItems = createSelector(
+  selectOrder,
+  (order) => order?.items.reduce((total, item) => total + item.quantity, 0) ?? 0
+);
+
+export const selectComputedTotalPrice = createSelector(
+  selectOrder,
+  (order) => order?.items.reduce((total, item) => total + (item.quantity * item.price), 0) ?? 0
+);
