@@ -12,10 +12,11 @@ import {
 import { Order as order } from '../order';
 import { orderActions } from '../store/order.actions';
 import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms'
 
 @Component({
   selector: 'app-order-page',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, FormsModule],
   templateUrl: './order-page.component.html',
 })
 export class OrderPageComponent implements OnInit {
@@ -25,6 +26,10 @@ export class OrderPageComponent implements OnInit {
   order$: Observable<order | null>;
   totalItems$: Observable<number>;
   totalPrice$: Observable<number>;
+
+  itemQuantity: number = 0;
+  showedItem: string = "";
+
   constructor() {
     this.isLoading$ = this.store.select(selectIsLoading);
     this.error$ = this.store.select(selectError);
@@ -41,10 +46,15 @@ export class OrderPageComponent implements OnInit {
   removeItem(platId: string) {
     this.store.dispatch(orderActions.removeItem({ platId }));
   }
-  updateItemQuantity(platId: string, quantity: number) {
+  updateItemQuantity(platId: string = this.showedItem, quantity: number = this.itemQuantity) {
     this.store.dispatch(orderActions.updateItemQuantity({ platId, quantity }));
   }
   clearOrder() {
     this.store.dispatch(orderActions.clearOrders());
+  }
+
+  edit(quantity: number, id: string): void {
+    this.itemQuantity = quantity;
+    this.showedItem = id;
   }
 }

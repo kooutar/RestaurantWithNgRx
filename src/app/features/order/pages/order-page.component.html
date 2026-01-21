@@ -14,8 +14,10 @@
       @for (item of order.items; track item) {
         <li>
           {{ item.platId }} - Quantity: {{ item.quantity }}
+          <button (click)="removeItem(item.platId)">Remove Item</button>
+          <button (click)="edit(item.quantity, item.platId)">edit</button>
+          <input (change)="updateItemQuantity()" type="number" min="0" [class]="showedItem !== item.platId ? 'hidden':''" min="1" [(ngModel)]="itemQuantity">
         </li>
-        <button (click)="removeItem(item.platId)">Remove Item</button>
       }
     </ul>
   </div>

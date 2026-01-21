@@ -22,7 +22,7 @@ export class OrderService {
     ],
   };
   getOrder(): Observable<Order> {
-    return of(this.mockOrder).pipe(delay(500));
+    return of(this.mockOrder);
   }
   addItem(platId: string, quantity: number): Observable<Order> {
     const updatedOrder: Order = {
@@ -32,7 +32,7 @@ export class OrderService {
 
     this.mockOrder = updatedOrder;
 
-    return of(updatedOrder).pipe(delay(500));
+    return of(updatedOrder);
   }
   removeItem(platId: string): Observable<Order> {
     const updatedOrder: Order = {
@@ -42,14 +42,18 @@ export class OrderService {
 
     this.mockOrder = updatedOrder;
 
-    return of(updatedOrder).pipe(delay(500));
+    return of(updatedOrder);
   }
   updateItemQuantity(platId: string, quantity: number): Observable<Order> {
     const updatedOrder: Order = {
       ...this.mockOrder,
-      items: [...this.mockOrder.items, { platId, quantity }],
+      items: [
+        ...this.mockOrder.items.map((item) =>
+          item.platId === platId ? { platId, quantity } : item,
+        ),
+      ],
     };
     this.mockOrder = updatedOrder;
-    return of(updatedOrder).pipe(delay(500));
+    return of(updatedOrder);
   }
 }
