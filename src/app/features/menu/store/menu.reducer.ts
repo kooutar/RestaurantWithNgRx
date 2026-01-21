@@ -27,5 +27,10 @@ export const menuReducer = createReducer(
   on(MenuActions.filterAvailableItems, (state, { showOnlyAvailable }) => ({
     ...state,
     showOnlyAvailable
+  })),
+  
+   on(MenuActions.changePage, (state, { page }) => ({
+    ...state,
+    currentPage: page
   }))
 );

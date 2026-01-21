@@ -75,7 +75,7 @@
           <!-- Image Container -->
           <div class="relative h-56 overflow-hidden bg-gray-100">
             <img 
-              [src]="item.image || 'assets/placeholder.jpg'" 
+              [src]="item.img || 'assets/placeholder.jpg'" 
               [alt]="item.name"
               loading="lazy"
               class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
@@ -118,7 +118,7 @@
           </div>
         </div>
       </div>
-
+   
       <!-- Empty State -->
       <div 
         *ngIf="(menuItems$ | async)?.length === 0" 
@@ -130,5 +130,11 @@
         </p>
       </div>
     </div>
+     <div class="pagination">
+  <button (click)="prevPage()">Précédent</button>
+  <span>Page actuelle: {{ currentPage$ | async }}</span>
+  <button (click)="nextPage()">Suivant</button>
+</div>
+
   </div>
 </div>

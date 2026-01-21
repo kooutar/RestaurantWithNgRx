@@ -24,26 +24,21 @@ export class MenuPageComponent implements OnInit ,OnDestroy{
   totalCount$: Observable<number>;
 
   private subscriptions: Subscription = new Subscription();
-
+  MenuSelectors: any;
+ currentPage$: Observable<number> | undefined;
   constructor(private store: Store<AppState>) {
-    this.menuItems$ = this.store.select(MenuSelectors.selectFilteredMenuItems);
+   // this.menuItems$ = this.store.select(MenuSelectors.selectFilteredMenuItems);
     this.loading$ = this.store.select(MenuSelectors.selectMenuLoading);
     this.error$ = this.store.select(MenuSelectors.selectMenuError);
     this.showOnlyAvailable$ = this.store.select(MenuSelectors.selectShowOnlyAvailable);
     this.availableCount$ = this.store.select(MenuSelectors.selectAvailableCount);
     this.totalCount$ = this.store.select(MenuSelectors.selectTotalCount);
+    this.menuItems$ = this.store.select(MenuSelectors.selectPaginatedMenuItems);
+     this.currentPage$ = this.store.select(MenuSelectors.selectCurrentPage); 
   }
 
   ngOnInit(): void {
-    this.store.dispatch(MenuActions.loadMenuItems());
-
-    // 📌 Option 1 : Afficher tous les items dans la console
-    this.subscriptions.add(
-      this.store.select(MenuSelectors.selectAllMenuItems).subscribe(items => {
-        console.log('📋 Tous les plats:', items);
-        console.log('📊 Nombre total:', items.length);
-      })
-    );
+    this.store.dispatch(MenuActions.loadMenuItems())
 
   }
 
@@ -62,5 +57,20 @@ export class MenuPageComponent implements OnInit ,OnDestroy{
     console.log('🔄 Rechargement des plats...');
     this.store.dispatch(MenuActions.loadMenuItems());
   }
+
+  // Méthodes pour naviguer entre les pages
+goToPage(page: number) {
+  this.store.dispatch(MenuActions.changePage({ page }));
+}
+nextPage() {
+  this.store.select(MenuSelectors.selectCurrentPage).subscribe(page => {
+    this.store.dispatch(MenuActions.changePage({ page: page + 1 }));
+  }).unsubscribe();
+}
+prevPage() {
+  this.store.select(MenuSelectors.selectCurrentPage).subscribe(page => {
+    if (page > 1) this.store.dispatch(MenuActions.changePage({ page: page - 1 }));
+  }).unsubscribe();
+}
   
 }
