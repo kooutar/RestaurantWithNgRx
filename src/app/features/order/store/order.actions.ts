@@ -21,5 +21,7 @@ export const orderActions = createActionGroup({
     'Update Item Quantity Failure': props<{ error: string }>(),
 
     'Clear Orders': emptyProps(),
+    'Clear Orders Success': props<{ order: Order }>(),
+    'Clear Orders Failure': props<{ error: string }>(),
   },
 });

@@ -49,3 +49,14 @@ export const updateItemQuantityEffect = createEffect(
     ),
     { functional: true }
 );
+export const clearOrdersEffect = createEffect(
+  (actions$ = inject(Actions), orderService = inject(OrderService))=>
+    actions$.pipe(
+      ofType(orderActions.clearOrders),
+      mergeMap(() => orderService.clearOrder().pipe(
+        map((order) => orderActions.clearOrdersSuccess({ order })),
+        catchError((error) => of(orderActions.clearOrdersFailure({ error: error.message })))
+      ))
+    ),
+    { functional: true }
+);
