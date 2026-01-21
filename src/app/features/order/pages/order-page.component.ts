@@ -6,8 +6,8 @@ import {
   selectError,
   selectIsLoading,
   selectOrder,
-  selectTotalItems,
-  selectTotalPrice,
+  selectComputedTotalItems,
+  selectComputedTotalPrice,
 } from '../store/order.reducers';
 import { Order as order } from '../order';
 import { orderActions } from '../store/order.actions';
@@ -34,14 +34,14 @@ export class OrderPageComponent implements OnInit {
     this.isLoading$ = this.store.select(selectIsLoading);
     this.error$ = this.store.select(selectError);
     this.order$ = this.store.select(selectOrder);
-    this.totalItems$ = this.store.select(selectTotalItems);
-    this.totalPrice$ = this.store.select(selectTotalPrice);
+    this.totalItems$ = this.store.select(selectComputedTotalItems);
+    this.totalPrice$ = this.store.select(selectComputedTotalPrice);
   }
   ngOnInit(): void {
     this.store.dispatch(orderActions.loadOrder());
   }
-  addItem(platId: string, quantity: number) {
-    this.store.dispatch(orderActions.addItem({ platId, quantity }));
+  addItem(platId: string, quantity: number, price: number, name?: string) {
+    this.store.dispatch(orderActions.addItem({ platId, quantity, price, name }));
   }
   removeItem(platId: string) {
     this.store.dispatch(orderActions.removeItem({ platId }));
