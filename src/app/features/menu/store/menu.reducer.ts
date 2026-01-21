@@ -28,8 +28,7 @@ export const menuReducer = createReducer(
     ...state,
     showOnlyAvailable
   })),
-  
-   on(MenuActions.changePage, (state, { page }) => ({
+  on(MenuActions.changePage, (state, { page }) => ({
     ...state,
     currentPage: page
   }))

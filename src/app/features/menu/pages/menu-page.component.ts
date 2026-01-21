@@ -6,6 +6,8 @@ import * as MenuSelectors from '../store/menu.selectors'
 import * as MenuActions from '../store/menu.actions'
 import { CommonModule } from '@angular/common';
 import {AppState } from '../store/menu.state';
+import { take } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-menu-page',
@@ -47,7 +49,6 @@ export class MenuPageComponent implements OnInit ,OnDestroy{
   }
 
   toggleFilter(showOnlyAvailable: boolean): void {
-    console.log('🔄 Filtre changé:', showOnlyAvailable ? 'Disponibles uniquement' : 'Tous les plats');
     this.store.dispatch(
       MenuActions.filterAvailableItems({ showOnlyAvailable })
     );
@@ -63,14 +64,26 @@ goToPage(page: number) {
   this.store.dispatch(MenuActions.changePage({ page }));
 }
 nextPage() {
-  this.store.select(MenuSelectors.selectCurrentPage).subscribe(page => {
-    this.store.dispatch(MenuActions.changePage({ page: page + 1 }));
-  }).unsubscribe();
+  this.currentPage$!
+    .pipe(take(1))
+    .subscribe(page => {
+      this.store.dispatch(
+        MenuActions.changePage({ page: page + 1 })
+      );
+    });
 }
+
 prevPage() {
-  this.store.select(MenuSelectors.selectCurrentPage).subscribe(page => {
-    if (page > 1) this.store.dispatch(MenuActions.changePage({ page: page - 1 }));
-  }).unsubscribe();
+  this.currentPage$!
+    .pipe(take(1))
+    .subscribe(page => {
+      if (page > 1) {
+        this.store.dispatch(
+          MenuActions.changePage({ page: page - 1 })
+        );
+      }
+    });
 }
+
   
 }
