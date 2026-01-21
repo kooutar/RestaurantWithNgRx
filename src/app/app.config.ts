@@ -9,6 +9,9 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { orderFeature } from './features/order/store/order.reducers';
 import { provideHttpClient } from '@angular/common/http';
+import { menuReducer } from './features/menu/store/menu.reducer';
+import { from } from 'rxjs';
+import {MenuEffects} from './features/menu/store/menu.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +21,8 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideStore(),
     provideState(orderFeature),
-    provideEffects(orderEffects),
+    provideState('menu', menuReducer),
+    provideEffects(orderEffects,MenuEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
