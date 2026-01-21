@@ -7,6 +7,21 @@
       <h1 class="text-4xl md:text-5xl font-titre font-bold text-charbon mb-4">
         Menu des Plats
       </h1>
+      <div class="fixed bottom-6 right-6 z-50" *ngIf="(totalPrice$ | async) as price">
+  <button
+    class="flex items-center gap-3 px-6 py-4
+           bg-or text-white font-titre font-bold text-lg
+           rounded-full shadow-2xl
+           hover:scale-105 transition-transform
+           disabled:opacity-50 disabled:cursor-not-allowed"
+    [disabled]="price === 0"
+  >
+    🛒 Total :
+    <span>
+      {{ $any(price) | currency:'EUR' }}
+    </span>
+  </button>
+</div>
 
       <!-- Stats -->
       <div class="mb-6" *ngIf="(totalCount$ | async) as total">
@@ -63,6 +78,8 @@
         </button>
       </div>
     </div>
+<!-- Total Order Button -->
+
 
     <!-- Menu Items Grid -->
     <div *ngIf="!(loading$ | async) && !(error$ | async)">
@@ -115,6 +132,17 @@
               </span>
               <span class="text-2xl" *ngIf="!item.price">–</span>
             </div>
+
+                    <button
+                        (click)="item.id && orderItem(item.id)"
+                        [disabled]="!item.disponible || !item.id || (item.id ? (orderContains$(item.id) | async) : false)"
+                        class="px-4 py-2 text-sm font-body font-semibold rounded-lg transition-all duration-200
+                              bg-vert text-white hover:bg-vert/90
+                              disabled:bg-gray-300 disabled:text-gray-600
+                              disabled:cursor-not-allowed"
+                      >
+                             {{ item.id && (orderContains$(item.id) | async) ? 'Commandé ✓' : 'Commander' }}
+                   </button>
           </div>
         </div>
 

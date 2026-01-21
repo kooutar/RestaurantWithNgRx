@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable ,Subscription } from 'rxjs';
+import { Observable ,Subscribable,Subscription } from 'rxjs';
 import { MenuItem } from '../../../core/services/menu-api.service';
 import * as MenuSelectors from '../store/menu.selectors'
 import * as MenuActions from '../store/menu.actions'
 import { CommonModule } from '@angular/common';
 import {AppState } from '../store/menu.state';
 import { take } from 'rxjs/operators';
+import { selectIsItemInOrder } from '../../order/store/order.selectors';
+import { orderActions } from '../../order/store/order.actions';
 
 
 @Component({
@@ -28,6 +30,8 @@ export class MenuPageComponent implements OnInit ,OnDestroy{
   private subscriptions: Subscription = new Subscription();
   MenuSelectors: any;
  currentPage$: Observable<number> | undefined;
+totalPrice$: Observable<unknown> | Subscribable<unknown> | PromiseLike<unknown> | undefined;
+price: any;
   constructor(private store: Store<AppState>) {
    // this.menuItems$ = this.store.select(MenuSelectors.selectFilteredMenuItems);
     this.loading$ = this.store.select(MenuSelectors.selectMenuLoading);
@@ -83,6 +87,14 @@ prevPage() {
         );
       }
     });
+}
+
+orderContains$(platId: string) {
+  return this.store.select(selectIsItemInOrder(platId));
+}
+
+orderItem(platId: string) {
+  this.store.dispatch(orderActions.addItem({ platId, quantity: 1 }));
 }
 
   
