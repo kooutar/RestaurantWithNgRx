@@ -33,13 +33,19 @@ export class MenuApiService {
    * et ajoute dynamiquement la disponibilité
    */
   getAllMenuItems(): Observable<MenuItem[]> {
-    return this.http.get<any[]>(this.API_URL).pipe(
-      map((plats) =>
-        plats.map((plat) => ({
-          ...plat,
-          disponible: Math.random() > 0.3 // 70% dispo / 30% non dispo
-        }))
-      )
-    );
-  }
+  return this.http.get<Record<string, any[]>>(this.API_URL).pipe(
+    map((response) => {
+      // 1️⃣ Transformer l'objet en tableau
+      const plats = Object.values(response).flat();
+
+      // 2️⃣ Ajouter le champ disponible
+      return plats.map((plat) => ({
+        ...plat,
+        disponible: Math.random() > 0.3
+      }));
+    })
+  );
+}
+
+ 
 }

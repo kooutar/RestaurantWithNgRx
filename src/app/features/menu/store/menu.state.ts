@@ -13,3 +13,8 @@ export const initialMenuState: MenuState = {
   error: null,
   showOnlyAvailable: false
 };
+
+// Ajout de l'interface pour l'AppState
+export interface AppState {
+  menu: MenuState;
+}

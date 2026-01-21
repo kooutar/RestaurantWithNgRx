@@ -1,8 +1,12 @@
 // src/app/store/menu/menu.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { MenuState } from './menu.state';
+import { MenuState,initialMenuState  } from './menu.state';
 
-export const selectMenuState = createFeatureSelector<MenuState>('menu');
+// Sélecteur avec fallback pour éviter les erreurs
+export const selectMenuState = createSelector(
+  createFeatureSelector<MenuState>('menu'),
+  (state) => state || initialMenuState
+);
 
 export const selectAllMenuItems = createSelector(
   selectMenuState,
