@@ -27,7 +27,7 @@ export class OrderPageComponent implements OnInit {
   totalItems$: Observable<number>;
   totalPrice$: Observable<number>;
 
-  itemQuantity: number = 0;
+  itemQuantity: number = 1;
   showedItem: string = "";
 
   constructor() {

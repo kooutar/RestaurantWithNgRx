@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import * as orderEffects from './features/order/store/order.effects';
 
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState(orderFeature),
     provideState('menu', menuReducer),
-    provideEffects(orderEffects,MenuEffects),
+    provideEffects(orderEffects, MenuEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
