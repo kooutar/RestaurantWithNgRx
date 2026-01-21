@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Order } from "../../features/order/order";
+import { Order, Plat } from "../../features/order/order";
 import { LocalStorageService } from "./local-storage.service";
+import { MenuItem } from "./menu-api.service";
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -34,10 +35,14 @@ export class OrderService {
    * @param quantity Quantity of the item to be added
    * @returns Observable of updated Order after adding the item with the given platId and quantity
    */
-  addItem(platId: string, quantity: number): Observable<Order> {
+  addItem(quantity: number, plat: MenuItem): Observable<Order> {
     const updatedOrder: Order = {
       ...this.order,
-      items: [...this.order.items, { platId, quantity }],
+      items: [
+        ...this.order.items.find((item => item.platId === plat.id))
+          ? this.order.items.map((item) => item.platId === plat.id ? { ...item, quantity: item.quantity + quantity } : item)
+          : [...this.order.items, { platId: plat.id || Date.now().toString(), quantity, plat }],
+      ],
     };
 
     return this.updateAndStoreOrder(updatedOrder);
@@ -67,7 +72,9 @@ export class OrderService {
     const updatedOrder: Order = {
       ...this.order,
       items: [
-        ...this.order.items.map((item) => (item.platId === platId ? { platId, quantity } : item)),
+        ...this.order.items.map((item) =>
+          item.platId === platId ? { platId, quantity, plat: item.plat } : item,
+        ),
       ],
     };
     return this.updateAndStoreOrder(updatedOrder);
