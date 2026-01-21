@@ -107,33 +107,36 @@
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="mt-12 flex items-center justify-center gap-8 font-body text-charbon">
+        <button (click)="prevPage()"
+          class="group flex cursor-pointer items-center gap-2 text-sm font-medium uppercase tracking-widest transition-colors duration-300 hover:text-or disabled:opacity-30 disabled:cursor-not-allowed">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full border border-charbon/20 transition-all duration-300 group-hover:border-or group-hover:bg-or group-hover:text-white">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
 
-        <!-- Pagination -->
-    <div class="mt-12 flex items-center justify-center gap-4">
-      <button
-        (click)="prevPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Précédent
-      </button>
+        <div class="flex flex-col items-center">
+          <span class="font-titre text-3xl font-bold italic text-charbon">
+            {{ currentPage$ | async }}
+          </span>
+          <span class="h-0.5 w-6 bg-or"></span>
+        </div>
 
-      <span class="px-6 py-3 bg-or text-white font-body font-bold rounded-lg shadow-md text-lg">
-        Page {{ currentPage$ | async }}
-      </span>
-
-      <button
-        (click)="nextPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        Suivant
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-    </div>
+        <button (click)="nextPage()"
+          class="group cursor-pointer flex items-center gap-2 text-sm font-medium uppercase tracking-widest transition-colors duration-300 hover:text-or disabled:opacity-30 disabled:cursor-not-allowed">
+          <span class="hidden sm:inline">Suivant</span>
+          <div class="flex h-8 w-8 items-center justify-center rounded-full border border-charbon/20 transition-all duration-300 group-hover:border-or group-hover:bg-or group-hover:text-white">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
       </div>
 
       <!-- Empty State -->

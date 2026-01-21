@@ -20,3 +20,8 @@ export const filterAvailableItems = createAction(
   '[Menu] Filter Available Items',
   props<{ showOnlyAvailable: boolean }>()
 );
+
+export const changePage = createAction(
+  '[Menu] Change Page',
+  props<{ page: number }>()
+);

@@ -48,3 +48,23 @@ export const selectTotalCount = createSelector(
   selectAllMenuItems,
   (items) => items.length
 );
+
+export const selectCurrentPage = createSelector(
+  selectMenuState,
+  (state: MenuState) => state.currentPage
+);
+
+export const selectItemsPerPage = createSelector(
+  selectMenuState,
+  (state: MenuState) => state.itemsPerPage
+);
+
+export const selectPaginatedMenuItems = createSelector(
+  selectFilteredMenuItems, // ton sélecteur existant
+  selectCurrentPage,
+  selectItemsPerPage,
+  (items, currentPage, itemsPerPage) => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return items.slice(start, start + itemsPerPage);
+  }
+);
