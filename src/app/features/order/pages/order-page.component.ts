@@ -40,9 +40,10 @@ export class OrderPageComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(orderActions.loadOrder());
   }
-  addItem(platId: string, quantity: number, price: number, name?: string) {
+  addItem(platId: string, quantity: number, price = 0, name?: string) {
     this.store.dispatch(orderActions.addItem({ platId, quantity, price, name }));
   }
+
   removeItem(platId: string) {
     this.store.dispatch(orderActions.removeItem({ platId }));
   }

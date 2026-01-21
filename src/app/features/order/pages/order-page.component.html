@@ -29,6 +29,6 @@
 @if (totalPrice$ | async; as totalPrice) {
   <div>Total Price: {{ totalPrice }}</div>
 }
-<button (click)="addItem('id4', 1)">Add Item</button><br>
+<button (click)="addItem('id4', 1, 10, 'Test item')">Add Item</button><br>
 <br>
 <button (click)="clearOrder()">Clear Order</button>
