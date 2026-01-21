@@ -19,7 +19,7 @@ export const addItemEffect = createEffect(
   (actions$ = inject(Actions), orderService = inject(OrderService))=>
     actions$.pipe(
       ofType(orderActions.addItem),
-      mergeMap(({ platId, quantity }) => orderService.addItem(platId, quantity).pipe(
+      mergeMap(({ quantity, plat }) => orderService.addItem(quantity, plat).pipe(
         map((order) => orderActions.addItemSuccess({ order })),
         catchError((error) => of(orderActions.addItemFailure({ error: error.message })))
       ))

@@ -1,5 +1,6 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { Order } from "../order";
+import { Order, Plat } from "../order";
+import { MenuItem } from "../../../core/services/menu-api.service";
 
 export const orderActions = createActionGroup({
   source: 'Order',
@@ -8,7 +9,7 @@ export const orderActions = createActionGroup({
     'Load Order Success': props<{ order: Order }>(),
     'Load Order Failure': props<{ error: string }>(),
 
-    'Add Item': props<{ platId: string; quantity: number }>(),
+    'Add Item': props<{ quantity: number; plat: MenuItem }>(),
     'Add Item Success': props<{ order: Order }>(),
     'Add Item Failure': props<{ error: string }>(),
 
