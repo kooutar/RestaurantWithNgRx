@@ -65,7 +65,7 @@ export const selectFilteredComplaints = createSelector(
       );
     }
 
-    return filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return [...filtered].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 );
 
