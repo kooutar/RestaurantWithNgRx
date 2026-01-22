@@ -102,6 +102,11 @@ import { Complaint, CreateComplaintDto, ComplaintStatus, ComplaintPriority } fro
         <p class="mt-4 text-gris-texte">Chargement...</p>
       </div>
 
+      <!-- Success Toast -->
+      <div *ngIf="success()" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50 animate-bounce">
+        {{ success() }}
+      </div>
+
       <!-- Error -->
       <div *ngIf="error()" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
         <p>{{ error() }}</p>
@@ -278,6 +283,7 @@ export class ComplaintPageComponent implements OnInit {
   complaints = signal<Complaint[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  success = signal<string | null>(null);
   stats = signal({ total: 0, pending: 0, inProgress: 0, resolved: 0, highPriority: 0, resolvedPercentage: 0 });
 
   searchTerm = '';
@@ -307,6 +313,8 @@ export class ComplaintPageComponent implements OnInit {
 
   onSubmit(): void {
     this.store.dispatch(ComplaintActions.createComplaint({ complaint: { ...this.formData } }));
+    this.success.set('Réclamation envoyée avec succès !');
+    setTimeout(() => this.success.set(null), 3000);
     this.resetForm();
   }
 
