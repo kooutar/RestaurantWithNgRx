@@ -10,7 +10,8 @@
 
       <!-- Stats -->
       <div class="mb-6" *ngIf="(totalCount$ | async) as total">
-        <span class="inline-flex items-center px-4 py-2 rounded-full bg-or text-white font-body font-semibold text-sm shadow-md">
+        <span
+          class="inline-flex items-center px-4 py-2 rounded-full bg-or text-white font-body font-semibold text-sm shadow-md">
           {{ availableCount$ | async }} disponibles / {{ total }} plats
         </span>
       </div>
@@ -19,25 +20,22 @@
       <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         <label class="flex items-center gap-3 cursor-pointer group">
           <div class="relative">
-            <input
-              type="checkbox"
-              [checked]="showOnlyAvailable$ | async"
-              (change)="toggleFilter($any($event.target).checked)"
-              class="sr-only peer"
-            />
-            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-or/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-vert"></div>
+            <input type="checkbox" [checked]="showOnlyAvailable$ | async"
+              (change)="toggleFilter($any($event.target).checked)" class="sr-only peer" />
+            <div
+              class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-or/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-vert">
+            </div>
           </div>
           <span class="font-body text-charbon font-medium">
             Afficher uniquement les plats disponibles
           </span>
         </label>
 
-        <button
-          (click)="reload()"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-vert hover:bg-vert/90 text-white font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-        >
+        <button (click)="reload()"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-vert hover:bg-vert/90 text-white font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           Recharger
         </button>
@@ -55,10 +53,8 @@
       <div class="bg-red-50 border-2 border-rouge rounded-xl p-6 text-center shadow-lg">
         <div class="text-rouge text-5xl mb-3">❌</div>
         <p class="text-charbon font-body font-medium mb-4">{{ error }}</p>
-        <button
-          (click)="reload()"
-          class="px-6 py-3 bg-rouge hover:bg-rouge/90 text-white font-body font-semibold rounded-lg transition-colors duration-200"
-        >
+        <button (click)="reload()"
+          class="px-6 py-3 bg-rouge hover:bg-rouge/90 text-white font-body font-semibold rounded-lg transition-colors duration-200">
           Réessayer
         </button>
       </div>
@@ -67,26 +63,18 @@
     <!-- Menu Items Grid -->
     <div *ngIf="!(loading$ | async) && !(error$ | async)">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          *ngFor="let item of menuItems$ | async"
+        <div *ngFor="let item of menuItems$ | async"
           class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-          [class.opacity-60]="!item.disponible"
-        >
+          [class.opacity-60]="!item.disponible">
           <!-- Image Container -->
           <div class="relative h-56 overflow-hidden bg-gray-100">
-            <img
-              [src]="item.img || 'assets/placeholder.jpg'"
-              [alt]="item.name"
-              loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-            />
+            <img [src]="item.img || 'assets/placeholder.jpg'" [alt]="item.name" loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
 
             <!-- Availability Badge -->
             <span
               class="absolute top-3 right-3 px-3 py-1.5 rounded-full text-white text-sm font-body font-semibold shadow-lg"
-              [class.bg-vert]="item.disponible"
-              [class.bg-rouge]="!item.disponible"
-            >
+              [class.bg-vert]="item.disponible" [class.bg-rouge]="!item.disponible">
               {{ item.disponible ? '✓ Disponible' : '✗ Indisponible' }}
             </span>
           </div>
@@ -99,7 +87,9 @@
 
             <p class="text-sm text-gris-texte font-body mb-3 flex items-center gap-2" *ngIf="item.category">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                  d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd" />
               </svg>
               {{ item.category }}
             </p>
@@ -114,43 +104,45 @@
                 {{ item.price | currency:'EUR' }}
               </span>
               <span class="text-2xl" *ngIf="!item.price">–</span>
+
+              <button (click)="addToCart(item)" [disabled]="!item.disponible"
+                class="px-4 py-2 bg-charbon text-white rounded-lg hover:bg-charbon/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Ajouter
+              </button>
             </div>
           </div>
         </div>
 
         <!-- Pagination -->
-    <div class="mt-12 flex items-center justify-center gap-4">
-      <button 
-        (click)="prevPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Précédent
-      </button>
-      
-      <span class="px-6 py-3 bg-or text-white font-body font-bold rounded-lg shadow-md text-lg">
-        Page {{ currentPage$ | async }}
-      </span>
-      
-      <button 
-        (click)="nextPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        Suivant
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-    </div>
+        <div class="mt-12 flex items-center justify-center gap-4">
+          <button (click)="prevPage()"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Précédent
+          </button>
+
+          <span class="px-6 py-3 bg-or text-white font-body font-bold rounded-lg shadow-md text-lg">
+            Page {{ currentPage$ | async }}
+          </span>
+
+          <button (click)="nextPage()"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon">
+            Suivant
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Empty State -->
-      <div
-        *ngIf="(menuItems$ | async)?.length === 0"
-        class="text-center py-20"
-      >
+      <div *ngIf="(menuItems$ | async)?.length === 0" class="text-center py-20">
         <div class="text-6xl mb-4">🍽️</div>
         <p class="text-gris-texte font-body text-xl">
           Aucun plat disponible pour le moment
