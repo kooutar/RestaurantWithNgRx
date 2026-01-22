@@ -3,12 +3,13 @@ import { Observable, of } from "rxjs";
 import { Order, Plat } from "../../features/order/order";
 import { LocalStorageService } from "./local-storage.service";
 import { MenuItem } from "./menu-api.service";
+import { ToastService } from "./toast.service";
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private order: Order;
 
-  constructor(private storageService: LocalStorageService<Order>) {
+  constructor(private storageService: LocalStorageService<Order>, private toastService: ToastService) {
     const storedOrder = this.storageService.get('order');
     if (storedOrder) {
       this.order = storedOrder;
@@ -45,6 +46,7 @@ export class OrderService {
       ],
     };
 
+    this.toastService.show(plat.name);
     return this.updateAndStoreOrder(updatedOrder);
   }
 

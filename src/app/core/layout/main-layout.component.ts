@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from "@angular/router";
 import { FooterComponent } from "./footer.component";
 import { HeaderComponent } from "./header.component";
+import { ToastComponent } from "../../shared/includes/toast.component";
 
 @Component({
   selector: 'app-main-layout',
@@ -76,7 +77,8 @@ import { HeaderComponent } from "./header.component";
         <div class="h-1 w-full bg-white pb-safe"></div>
       </nav>
     </div>
+    <app-toast/>
   `,
-  imports: [RouterOutlet, CommonModule, RouterModule, FooterComponent, HeaderComponent],
+  imports: [RouterOutlet, CommonModule, RouterModule, FooterComponent, HeaderComponent, ToastComponent],
 })
 export class MainLayoutComponent {}
