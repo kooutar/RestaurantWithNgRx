@@ -104,5 +104,5 @@ import { selectTotalItems } from '../../features/order/store/order.reducers';
 export class MainLayoutComponent {
   private store = inject(Store);
 
-  cartCount$: Observable<number> = this.store.select(selectTotalItems);
+  cartCount$ = this.store.select(selectTotalItems);
 }
