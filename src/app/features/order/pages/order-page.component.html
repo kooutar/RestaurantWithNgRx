@@ -1,34 +1,172 @@
-<h1>Order</h1>
-@if (isLoading$|async) {
-  <div>Loading...</div>
-}
-@if(error$|async; as error) {
-  <div class="error">Error: {{ error }}</div>
-}
-@if (order$|async; as order) {
-  @if(order) {
-    <div>
-    <h2>Order Details</h2>
-    <p>Order ID: {{ order.orderId }}</p>
-    <ul>
-      @for (item of order.items; track item) {
-        <li>
-          {{ item.platId }} - Quantity: {{ item.quantity }}
-          <button (click)="removeItem(item.platId)">Remove Item</button>
-          <button (click)="edit(item.quantity, item.platId)">edit</button>
-          <input (change)="updateItemQuantity()" type="number" min="0" [class]="showedItem !== item.platId ? 'hidden':''" min="1" [(ngModel)]="itemQuantity">
-        </li>
+<div class="min-h-screen bg-creme font-body text-charbon">
+  <div class="mx-auto max-w-4xl px-4 py-16">
+
+    <header class="mb-12 text-center">
+      <h1 class="font-titre text-4xl font-bold italic text-charbon md:text-5xl">Votre Commande</h1>
+      <div class="mx-auto mt-4 h-1 w-16 bg-or"></div>
+    </header>
+
+    @if (isLoading$ | async) {
+      <div class="flex flex-col items-center justify-center py-20">
+        <div class="h-12 w-12 animate-spin rounded-full border-4 border-charbon/5 border-t-or"></div>
+        <span class="mt-4 animate-pulse text-sm font-medium uppercase tracking-widest text-or-dark">Préparation...</span>
+      </div>
+    }
+
+    @if (error$ | async; as error) {
+      <div class="mx-auto max-w-lg rounded-lg border border-rouge/20 bg-white p-6 text-center shadow-sm">
+        <div class="mb-2 flex justify-center text-rouge">
+          <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <p class="font-medium text-charbon">Oups, une erreur est survenue.</p>
+        <p class="mt-1 text-sm text-gris-texte">{{ error }}</p>
+      </div>
+    }
+
+    @if (order$ | async; as order) {
+      @if (order && order.items.length > 0) {
+
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-start">
+
+          <div class="flex-1 space-y-4">
+            <div class="mb-2 flex items-center justify-between px-2">
+              <span class="text-xs uppercase tracking-widest text-gris-texte">Détails ({{ order.orderId }})</span>
+              @if (totalItems$ | async; as count) {
+                <span class="text-xs font-semibold text-charbon">{{ count }} articles</span>
+              }
+            </div>
+
+            <ul class="space-y-4">
+              @for (item of order.items; track item.platId) {
+                <li class="group relative flex flex-col gap-4 rounded-xl bg-white p-4 shadow-sm ring-1 ring-charbon/5 transition-all hover:shadow-md sm:flex-row sm:items-center">
+
+                  <div class="relative h-24 w-full shrink-0 overflow-hidden rounded-lg sm:h-24 sm:w-24">
+                    @if(item.plat.image || item.plat.img) {
+                      <img [src]="item.plat.image || item.plat.img"
+                           [alt]="item.plat.name"
+                           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    } @else {
+                      <div class="flex h-full w-full items-center justify-center bg-creme text-charbon/20">
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="flex-1">
+                    <div class="flex justify-between">
+                      <h3 class="font-titre text-xl font-bold text-charbon">{{ item.plat.name }}</h3>
+                      @if(item.plat.price) {
+                        <span class="font-body text-sm font-medium text-gris-texte">
+                          {{ item.plat.price }} €
+                        </span>
+                      }
+                    </div>
+
+                    @if(item.plat.description) {
+                      <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-gris-texte">
+                        {{ item.plat.description }}
+                      </p>
+                    }
+
+                    @if(item.plat.category) {
+                       <span class="mt-2 inline-block rounded-full bg-vert/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-vert">
+                         {{ item.plat.category }}
+                       </span>
+                    }
+                  </div>
+
+                  <div class="mt-4 flex items-center justify-between gap-4 border-t border-creme pt-4 sm:mt-0 sm:flex-col sm:items-end sm:border-t-0 sm:pt-0">
+
+                    <div class="flex items-center gap-2 rounded-lg bg-creme p-1">
+                      <button (click)="edit(item.quantity, item.platId)"
+                              class="rounded p-1 text-charbon hover:bg-white hover:text-or hover:shadow-sm disabled:opacity-50"
+                              title="Modifier">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+
+                      <div class="min-w-8 text-center">
+                        <span [class]="showedItem === item.platId ? 'hidden' : 'block'"
+                              class="font-titre text-lg font-bold text-charbon">
+                          x{{ item.quantity }}
+                        </span>
+
+                        <input type="number"
+                               [(ngModel)]="itemQuantity"
+                               (change)="updateItemQuantity()"
+                               [class]="showedItem !== item.platId ? 'hidden' : 'block'"
+                               class="w-12 rounded border-none bg-white py-0 text-center text-sm font-bold shadow-inner focus:ring-1 focus:ring-or">
+                      </div>
+
+                      <button (click)="removeItem(item.platId)"
+                              class="rounded p-1 text-charbon hover:bg-white hover:text-rouge hover:shadow-sm"
+                              title="Retirer">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    @if(item.plat.price) {
+                      <span class="font-titre text-lg font-bold text-or">
+                        {{ item.plat.price * item.quantity | number:'1.2-2' }} €
+                      </span>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="lg:sticky lg:top-8 lg:w-80">
+            <div class="rounded-xl bg-white p-6 shadow-lg ring-1 ring-charbon/5">
+              <h2 class="mb-6 font-titre text-2xl font-bold text-charbon">Résumé</h2>
+
+              <div class="mb-4 flex justify-between text-sm text-gris-texte">
+                <span>Sous-total</span>
+                @if (totalPrice$ | async; as price) {
+                  <span>{{ price }} €</span>
+                }
+              </div>
+
+              <div class="mb-8 flex justify-between text-sm text-gris-texte">
+                <span>Service</span>
+                <span>Inclus</span>
+              </div>
+
+              <div class="mb-8 flex items-end justify-between border-t border-dashed border-charbon/20 pt-6">
+                <span class="font-body font-bold text-charbon">Total</span>
+                @if (totalPrice$ | async; as price) {
+                  <span class="font-titre text-4xl font-bold text-or">{{ price }} €</span>
+                }
+              </div>
+
+              <button class="w-full rounded-lg bg-charbon py-4 font-body font-bold uppercase tracking-widest text-white transition-transform hover:-translate-y-0.5 hover:bg-or shadow-md hover:shadow-lg">
+                Commander
+              </button>
+
+              <button (click)="clearOrder()"
+                      class="mt-4 w-full text-center text-xs font-medium uppercase tracking-widest text-gris-texte underline transition-colors hover:text-rouge">
+                Vider le panier
+              </button>
+            </div>
+          </div>
+
+        </div>
+      } @else {
+        <div class="flex flex-col items-center justify-center py-16 text-center opacity-60">
+           <div class="mb-4 rounded-full bg-charbon/5 p-6">
+             <svg class="h-10 w-10 text-charbon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+             </svg>
+           </div>
+           <p class="font-titre text-2xl text-charbon">Votre panier est vide</p>
+           <p class="mt-2 text-gris-texte">Découvrez notre menu pour commencer.</p>
+        </div>
       }
-    </ul>
+    }
   </div>
-  }
-}
-@if (totalItems$| async; as totalItems) {
-  <div>Total Items in Order: {{ totalItems }}</div>
-}
-@if (totalPrice$ | async; as totalPrice) {
-  <div>Total Price: {{ totalPrice }}</div>
-}
-<button (click)="addItem('id4', 1)">Add Item</button><br>
-<br>
-<button (click)="clearOrder()">Clear Order</button>
+</div>

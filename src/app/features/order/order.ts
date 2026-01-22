@@ -1,3 +1,5 @@
+import { MenuItem } from "../../core/services/menu-api.service";
+
 export interface Plat {
   id: string;
   img: string;
@@ -47,6 +49,7 @@ export interface ApiResponse {
 interface OrderItem {
   platId: string;
   quantity: number;
+  plat: MenuItem;
 }
 export interface Order {
   orderId: string;

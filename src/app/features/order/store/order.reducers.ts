@@ -25,7 +25,7 @@ export const orderFeature = createFeature({
       isLoading: false,
       order: action.order,
       totalItems: action.order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: action.order.items.reduce((total, item) => total + (item.quantity * 10), 0),
+      totalPrice: action.order.items.reduce((total, item) => total + (item.quantity * (item.plat.price || 10)), 0),
     })),
     on(orderActions.loadOrderFailure, (state, action) => ({
       ...state,
@@ -43,7 +43,7 @@ export const orderFeature = createFeature({
       isLoading: false,
       order,
       totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
+      totalPrice: order.items.reduce((total, item) => total + (item.quantity * (item.plat.price || 10)), 0),
     })),
     on(orderActions.addItemFailure, (state, { error }) => ({
       ...state,
@@ -61,7 +61,7 @@ export const orderFeature = createFeature({
       isLoading: false,
       order,
       totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
+      totalPrice: order.items.reduce((total, item) => total + (item.quantity * (item.plat.price || 10)), 0),
     })),
     on(orderActions.removeItemFailure, (state, { error }) => ({
       ...state,
@@ -79,7 +79,7 @@ export const orderFeature = createFeature({
       isLoading: false,
       order,
       totalItems: order.items.reduce((total, item) => total + item.quantity, 0),
-      totalPrice: order.items.reduce((total, item) => total + (item.quantity * 10), 0),
+      totalPrice: order.items.reduce((total, item) => total + (item.quantity * (item.plat.price || 10)), 0),
     })),
     on(orderActions.updateItemQuantityFailure, (state, { error }) => ({
       ...state,

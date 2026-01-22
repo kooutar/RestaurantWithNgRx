@@ -3,46 +3,56 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- Header -->
-    <header class="mb-8">
-      <h1 class="text-4xl md:text-5xl font-titre font-bold text-charbon mb-4">
-        Menu des Plats
-      </h1>
+    <header class="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
 
-      <!-- Stats -->
-      <div class="mb-6" *ngIf="(totalCount$ | async) as total">
-        <span class="inline-flex items-center px-4 py-2 rounded-full bg-or text-white font-body font-semibold text-sm shadow-md">
-          {{ availableCount$ | async }} disponibles / {{ total }} plats
-        </span>
+  <div>
+    <h1 class="font-titre text-5xl font-bold text-charbon">
+      Menu des Plats
+    </h1>
+
+    <div class="mt-4 h-1 w-20 bg-or"></div>
+
+    <div class="mt-4 flex items-center gap-2 font-body text-sm font-medium text-gris-texte" *ngIf="(totalCount$ | async) as total">
+      <span class="text-vert font-bold">
+        {{ availableCount$ | async }}
+      </span>
+      <span>disponibles sur</span>
+      <span class="text-charbon font-bold">{{ total }}</span>
+      <span>plats au total</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+
+    <label class="group flex cursor-pointer items-center gap-3">
+      <div class="relative">
+        <input type="checkbox"
+               [checked]="showOnlyAvailable$ | async"
+               (change)="toggleFilter($any($event.target).checked)"
+               class="peer sr-only" />
+
+        <div class="h-7 w-12 rounded-full bg-gray-200 shadow-inner transition-colors duration-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-or/20 peer-checked:bg-vert"></div>
+
+        <div class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-300 peer-checked:translate-x-5"></div>
       </div>
 
-      <!-- Controls -->
-      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-        <label class="flex items-center gap-3 cursor-pointer group">
-          <div class="relative">
-            <input
-              type="checkbox"
-              [checked]="showOnlyAvailable$ | async"
-              (change)="toggleFilter($any($event.target).checked)"
-              class="sr-only peer"
-            />
-            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-or/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-vert"></div>
-          </div>
-          <span class="font-body text-charbon font-medium">
-            Afficher uniquement les plats disponibles
-          </span>
-        </label>
+      <span class="select-none font-body text-sm font-medium text-charbon transition-colors group-hover:text-or">
+        Disponibles uniquement
+      </span>
+    </label>
 
-        <button
-          (click)="reload()"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-vert hover:bg-vert/90 text-white font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          Recharger
-        </button>
-      </div>
-    </header>
+    <div class="hidden h-8 w-px bg-charbon/10 sm:block"></div>
+
+    <button (click)="reload()"
+      class="group flex items-center gap-2 rounded-lg px-4 py-2 font-body text-sm font-semibold text-charbon transition-all hover:bg-creme hover:text-or">
+      <svg class="h-5 w-5 transition-transform duration-500 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>Recharger</span>
+    </button>
+  </div>
+
+</header>
 
     <!-- Loading State -->
     <div *ngIf="loading$ | async" class="flex flex-col items-center justify-center py-20">
@@ -55,10 +65,8 @@
       <div class="bg-red-50 border-2 border-rouge rounded-xl p-6 text-center shadow-lg">
         <div class="text-rouge text-5xl mb-3">❌</div>
         <p class="text-charbon font-body font-medium mb-4">{{ error }}</p>
-        <button
-          (click)="reload()"
-          class="px-6 py-3 bg-rouge hover:bg-rouge/90 text-white font-body font-semibold rounded-lg transition-colors duration-200"
-        >
+        <button (click)="reload()"
+          class="px-6 py-3 bg-rouge hover:bg-rouge/90 text-white font-body font-semibold rounded-lg transition-colors duration-200">
           Réessayer
         </button>
       </div>
@@ -66,91 +74,120 @@
 
     <!-- Menu Items Grid -->
     <div *ngIf="!(loading$ | async) && !(error$ | async)">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          *ngFor="let item of menuItems$ | async"
-          class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-          [class.opacity-60]="!item.disponible"
-        >
-          <!-- Image Container -->
-          <div class="relative h-56 overflow-hidden bg-gray-100">
-            <img
-              [src]="item.img || 'assets/placeholder.jpg'"
-              [alt]="item.name"
-              loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-            />
+      <div *ngIf="!(loading$ | async) && !(error$ | async)" class="mx-auto max-w-7xl px-4 py-8">
 
-            <!-- Availability Badge -->
-            <span
-              class="absolute top-3 right-3 px-3 py-1.5 rounded-full text-white text-sm font-body font-semibold shadow-lg"
-              [class.bg-vert]="item.disponible"
-              [class.bg-rouge]="!item.disponible"
-            >
-              {{ item.disponible ? '✓ Disponible' : '✗ Indisponible' }}
-            </span>
-          </div>
+  <div class="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
 
-          <!-- Content -->
-          <div class="p-6">
-            <h3 class="text-2xl font-titre font-bold text-charbon mb-2">
-              {{ item.name }}
-            </h3>
+    <div *ngFor="let item of menuItems$ | async"
+         class="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-charbon/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+         [class.opacity-75]="!item.disponible"
+         [class.pointer-events-none]="!item.disponible">
 
-            <p class="text-sm text-gris-texte font-body mb-3 flex items-center gap-2" *ngIf="item.category">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-              </svg>
-              {{ item.category }}
-            </p>
+      <div class="relative aspect-4/3 overflow-hidden">
+        <img [src]="item.img || 'assets/placeholder.jpg'"
+             [alt]="item.name"
+             loading="lazy"
+             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+             [class.grayscale]="!item.disponible">
 
-            <p class="text-gris-texte font-body text-sm leading-relaxed mb-4 line-clamp-3" *ngIf="item.description">
-              {{ item.description }}
-            </p>
+        <span *ngIf="item.category"
+              class="absolute left-4 top-4 rounded-md bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-charbon shadow-sm backdrop-blur-sm">
+          {{ item.category }}
+        </span>
 
-            <!-- Footer -->
-            <div class="pt-4 border-t border-gray-200 flex items-center justify-between">
-              <span class="text-3xl font-titre font-bold text-or" *ngIf="item.price">
-                {{ item.price | currency:'EUR' }}
-              </span>
-              <span class="text-2xl" *ngIf="!item.price">–</span>
-            </div>
-          </div>
+        <div *ngIf="!item.disponible"
+             class="absolute inset-0 flex items-center justify-center bg-charbon/40 backdrop-blur-[2px]">
+          <span class="rotate-12 rounded border-2 border-white px-4 py-2 font-titre text-xl font-bold uppercase tracking-widest text-white">
+            Épuisé
+          </span>
+        </div>
+      </div>
+
+      <div class="flex flex-1 flex-col p-6">
+
+        <div class="mb-4 flex-1">
+          <h3 class="font-titre text-2xl font-bold text-charbon group-hover:text-or transition-colors">
+            {{ item.name }}
+          </h3>
+          <p class="mt-3 line-clamp-2 font-body text-sm leading-relaxed text-gris-texte">
+            {{ item.description }}
+          </p>
         </div>
 
-        <!-- Pagination -->
-    <div class="mt-12 flex items-center justify-center gap-4">
-      <button 
-        (click)="prevPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Précédent
-      </button>
-      
-      <span class="px-6 py-3 bg-or text-white font-body font-bold rounded-lg shadow-md text-lg">
-        Page {{ currentPage$ | async }}
-      </span>
-      
-      <button 
-        (click)="nextPage()"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-vert hover:text-white text-charbon font-body font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-vert disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-charbon"
-      >
-        Suivant
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+        <div class="mt-auto border-t border-charbon/5 pt-6">
+          <div class="flex items-center justify-between">
+
+            <div class="flex flex-col">
+              <span class="text-xs font-medium uppercase tracking-wider text-gris-texte">Prix</span>
+              <span class="font-titre text-2xl font-bold text-or">
+                {{ item.price | currency:'EUR' }}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-3">
+
+              <div class="flex items-center rounded-lg border border-charbon/10 bg-creme">
+                <button (click)="qtyInput.stepDown()"
+                        class="px-2 py-1 text-charbon transition-colors hover:text-or">
+                  -
+                </button>
+                <input #qtyInput type="number" min="1" value="1" readonly
+                       class="w-8 bg-transparent text-center font-body text-sm font-semibold text-charbon focus:outline-none">
+                <button (click)="qtyInput.stepUp()"
+                        class="px-2 py-1 text-charbon transition-colors hover:text-or">
+                  +
+                </button>
+              </div>
+
+              <button (click)="addItem(qtyInput.valueAsNumber, item)"
+                      [disabled]="!item.disponible"
+                      class="flex h-10 w-10 items-center justify-center rounded-lg bg-charbon text-white shadow-md transition-all hover:bg-or hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-300">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+</div>
+
+      <!-- Pagination -->
+      <div class="mt-12 flex items-center justify-center gap-8 font-body text-charbon">
+        <button (click)="prevPage()"
+          class="group flex cursor-pointer items-center gap-2 text-sm font-medium uppercase tracking-widest transition-colors duration-300 hover:text-or disabled:opacity-30 disabled:cursor-not-allowed">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full border border-charbon/20 transition-all duration-300 group-hover:border-or group-hover:bg-or group-hover:text-white">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+
+        <div class="flex flex-col items-center">
+          <span class="font-titre text-3xl font-bold italic text-charbon">
+            {{ currentPage$ | async }}
+          </span>
+          <span class="h-0.5 w-6 bg-or"></span>
+        </div>
+
+        <button (click)="nextPage()"
+          class="group cursor-pointer flex items-center gap-2 text-sm font-medium uppercase tracking-widest transition-colors duration-300 hover:text-or disabled:opacity-30 disabled:cursor-not-allowed">
+          <span class="hidden sm:inline">Suivant</span>
+          <div class="flex h-8 w-8 items-center justify-center rounded-full border border-charbon/20 transition-all duration-300 group-hover:border-or group-hover:bg-or group-hover:text-white">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
       </div>
 
       <!-- Empty State -->
-      <div
-        *ngIf="(menuItems$ | async)?.length === 0"
-        class="text-center py-20"
-      >
+      <div *ngIf="(menuItems$ | async)?.length === 0" class="text-center py-20">
         <div class="text-6xl mb-4">🍽️</div>
         <p class="text-gris-texte font-body text-xl">
           Aucun plat disponible pour le moment

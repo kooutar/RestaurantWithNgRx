@@ -9,14 +9,15 @@ import {
   selectTotalItems,
   selectTotalPrice,
 } from '../store/order.reducers';
-import { Order as order } from '../order';
+import { Order as order, Plat } from '../order';
 import { orderActions } from '../store/order.actions';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms'
+import { MenuItem } from '../../../core/services/menu-api.service';
 
 @Component({
   selector: 'app-order-page',
-  imports: [AsyncPipe, FormsModule],
+  imports: [AsyncPipe, FormsModule, DecimalPipe],
   templateUrl: './order-page.component.html',
 })
 export class OrderPageComponent implements OnInit {
@@ -28,7 +29,7 @@ export class OrderPageComponent implements OnInit {
   totalPrice$: Observable<number>;
 
   itemQuantity: number = 1;
-  showedItem: string = "";
+  showedItem: string = '';
 
   constructor() {
     this.isLoading$ = this.store.select(selectIsLoading);
@@ -40,8 +41,8 @@ export class OrderPageComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(orderActions.loadOrder());
   }
-  addItem(platId: string, quantity: number) {
-    this.store.dispatch(orderActions.addItem({ platId, quantity }));
+  addItem(quantity: number, plat: MenuItem) {
+    this.store.dispatch(orderActions.addItem({ quantity, plat }));
   }
   removeItem(platId: string) {
     this.store.dispatch(orderActions.removeItem({ platId }));
