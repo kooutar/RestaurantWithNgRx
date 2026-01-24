@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Order, Plat } from "../../features/order/order";
+import { Order } from "../../features/order/order";
 import { LocalStorageService } from "./local-storage.service";
 import { MenuItem } from "./menu-api.service";
 import { ToastService } from "./toast.service";

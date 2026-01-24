@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { Order, Plat } from "../order";
+import { Order } from "../order";
 import { MenuItem } from "../../../core/services/menu-api.service";
 
 export const orderActions = createActionGroup({

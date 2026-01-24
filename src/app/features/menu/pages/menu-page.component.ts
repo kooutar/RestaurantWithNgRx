@@ -9,8 +9,6 @@ import {AppState } from '../store/menu.state';
 import { take } from 'rxjs/operators';
 import { OrderState } from '../../order/store/order.state';
 import { orderActions } from '../../order/store/order.actions';
-import { Plat } from '../../order/order';
-
 
 @Component({
   selector: 'app-menu-page',

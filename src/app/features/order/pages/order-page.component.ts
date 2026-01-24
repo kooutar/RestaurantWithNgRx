@@ -9,7 +9,7 @@ import {
   selectTotalItems,
   selectTotalPrice,
 } from '../store/order.reducers';
-import { Order as order, Plat } from '../order';
+import { Order as order } from '../order';
 import { orderActions } from '../store/order.actions';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms'
