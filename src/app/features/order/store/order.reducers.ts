@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { OrderState } from "./order.state";
 import { orderActions } from "./order.actions";
 
@@ -7,8 +7,6 @@ export const initialOrderState: OrderState = {
   order: null,
   isLoading: false,
   error: null,
-  totalItems: 0,
-  totalPrice: 0,
 }
 
 export const orderFeature = createFeature({
@@ -89,9 +87,17 @@ export const orderFeature = createFeature({
     // Clear Orders
     on(orderActions.clearOrders, (state) => ({
       ...state,
-      order: null,
-      totalItems: 0,
-      totalPrice: 0,
+      isLoading: true
+    })),
+    on(orderActions.clearOrdersSuccess, (state, { order }) => ({
+      ...state,
+      isLoading: false,
+      order,
+    })),
+    on(orderActions.clearOrdersFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error
     })),
   ),
 });
@@ -104,6 +110,4 @@ export const {
   selectIsLoading,
   selectError,
   selectOrder,
-  selectTotalItems,
-  selectTotalPrice
 } = orderFeature;

@@ -5,11 +5,9 @@ import { Observable } from 'rxjs';
 import {
   selectError,
   selectIsLoading,
-  selectOrder,
-  selectTotalItems,
-  selectTotalPrice,
+  selectOrder
 } from '../store/order.reducers';
-import { Order as order } from '../order';
+import { Order } from '../order';
 import { orderActions } from '../store/order.actions';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms'
@@ -22,22 +20,10 @@ import { MenuItem } from '../../../core/services/menu-api.service';
 })
 export class OrderPageComponent implements OnInit {
   private store: Store<OrderState> = inject(Store);
-  isLoading$: Observable<boolean>;
-  error$: Observable<string | null>;
-  order$: Observable<order | null>;
-  totalItems$: Observable<number>;
-  totalPrice$: Observable<number>;
 
   itemQuantity: number = 1;
   showedItem: string = '';
 
-  constructor() {
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.error$ = this.store.select(selectError);
-    this.order$ = this.store.select(selectOrder);
-    this.totalItems$ = this.store.select(selectTotalItems);
-    this.totalPrice$ = this.store.select(selectTotalPrice);
-  }
   ngOnInit(): void {
     this.store.dispatch(orderActions.loadOrder());
   }
@@ -47,15 +33,28 @@ export class OrderPageComponent implements OnInit {
   removeItem(platId: string) {
     this.store.dispatch(orderActions.removeItem({ platId }));
   }
-  updateItemQuantity(platId: string = this.showedItem, quantity: number = this.itemQuantity) {
-    this.store.dispatch(orderActions.updateItemQuantity({ platId, quantity }));
-  }
-  clearOrder() {
-    this.store.dispatch(orderActions.clearOrders());
+
+  increaseQuantity(platId: string, currentQuantity: number) {
+    this.store.dispatch(orderActions.updateItemQuantity({
+      platId,
+      quantity: currentQuantity + 1
+    }));
   }
 
-  edit(quantity: number, id: string): void {
-    this.itemQuantity = quantity;
-    this.showedItem = id;
+  decreaseQuantity(platId: string, currentQuantity: number) {
+    if (currentQuantity <= 1) {
+      this.removeItem(platId); // Ou juste ne rien faire, selon la règle
+      return;
+    }
+    this.store.dispatch(orderActions.updateItemQuantity({
+      platId,
+      quantity: currentQuantity - 1
+    }));
+  }
+
+  clearOrder() {
+    if (confirm('Voulez-vous vraiment vider votre panier ?')) {
+      this.store.dispatch(orderActions.clearOrders());
+    }
   }
 }

@@ -8,6 +8,7 @@ import { ToastComponent } from "../../shared/includes/toast.component";
 @Component({
   selector: 'app-main-layout',
   standalone: true,
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   template: `
     <div class="flex min-h-screen flex-col bg-creme font-body text-charbon">
       <app-header/>
@@ -81,4 +82,8 @@ import { ToastComponent } from "../../shared/includes/toast.component";
   `,
   imports: [RouterOutlet, CommonModule, RouterModule, FooterComponent, HeaderComponent, ToastComponent],
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  private store = inject(Store);
+
+  cartCount$: Observable<number> = this.store.select(selectComputedTotalItems);
+}
