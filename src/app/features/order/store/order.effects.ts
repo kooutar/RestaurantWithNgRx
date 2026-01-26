@@ -5,7 +5,7 @@ import { orderActions } from "./order.actions";
 import { catchError, map, mergeMap, of } from "rxjs";
 
 export const loadOrderEffect = createEffect(
-  (actions$ = inject(Actions), orderService = inject(OrderService)) =>
+  (actions$ = inject(Actions), orderService = inject(OrderService))=>
     actions$.pipe(
       ofType(orderActions.loadOrder),
       mergeMap(() => orderService.getOrder().pipe(
@@ -13,10 +13,10 @@ export const loadOrderEffect = createEffect(
         catchError((error) => of(orderActions.loadOrderFailure({ error: error.message })))
       ))
     ),
-  { functional: true }
+    { functional: true }
 );
 export const addItemEffect = createEffect(
-  (actions$ = inject(Actions), orderService = inject(OrderService)) =>
+  (actions$ = inject(Actions), orderService = inject(OrderService))=>
     actions$.pipe(
       ofType(orderActions.addItem),
       mergeMap(({ quantity, plat }) => orderService.addItem(quantity, plat).pipe(
@@ -24,7 +24,7 @@ export const addItemEffect = createEffect(
         catchError((error) => of(orderActions.addItemFailure({ error: error.message })))
       ))
     ),
-  { functional: true }
+    { functional: true }
 );
 export const removeItemEffect = createEffect((actions$ = inject(Actions), orderService = inject(OrderService)) =>
   actions$.pipe(
@@ -39,7 +39,7 @@ export const removeItemEffect = createEffect((actions$ = inject(Actions), orderS
   { functional: true }
 );
 export const updateItemQuantityEffect = createEffect(
-  (actions$ = inject(Actions), orderService = inject(OrderService)) =>
+  (actions$ = inject(Actions), orderService = inject(OrderService))=>
     actions$.pipe(
       ofType(orderActions.updateItemQuantity),
       mergeMap(({ platId, quantity }) => orderService.updateItemQuantity(platId, quantity).pipe(
@@ -47,10 +47,10 @@ export const updateItemQuantityEffect = createEffect(
         catchError((error) => of(orderActions.updateItemQuantityFailure({ error: error.message })))
       ))
     ),
-  { functional: true }
+    { functional: true }
 );
 export const clearOrdersEffect = createEffect(
-  (actions$ = inject(Actions), orderService = inject(OrderService)) =>
+  (actions$ = inject(Actions), orderService = inject(OrderService))=>
     actions$.pipe(
       ofType(orderActions.clearOrders),
       mergeMap(() => orderService.clearOrder().pipe(
@@ -58,5 +58,5 @@ export const clearOrdersEffect = createEffect(
         catchError((error) => of(orderActions.clearOrdersFailure({ error: error.message })))
       ))
     ),
-  { functional: true }
+    { functional: true }
 );

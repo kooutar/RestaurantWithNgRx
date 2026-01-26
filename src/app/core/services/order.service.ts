@@ -31,12 +31,10 @@ export class OrderService {
   }
 
   /**
-   * Adds an item to the order with the specified platId, quantity, price, and optional name.
+   * Adds an item to the order with the specified platId and quantity.
    * @param platId ID of the item to be added to the order
    * @param quantity Quantity of the item to be added
-   * @param price Price of the item from menu
-   * @param name Optional name of the item for display
-   * @returns Observable of updated Order after adding the item
+   * @returns Observable of updated Order after adding the item with the given platId and quantity
    */
   addItem(quantity: number, plat: MenuItem): Observable<Order> {
     const updatedOrder: Order = {
@@ -70,7 +68,7 @@ export class OrderService {
    * Updates the quantity of a specific item in the order.
    * @param platId ID of the item to be updated
    * @param quantity New quantity for the item
-   * @returns Observable of updated Order after updating the quantity
+   * @returns Observable of updated Order after updating the quantity of the item with the given platId
    */
   updateItemQuantity(platId: string, quantity: number): Observable<Order> {
     const updatedOrder: Order = {

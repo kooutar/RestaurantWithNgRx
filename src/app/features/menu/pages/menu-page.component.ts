@@ -1,12 +1,11 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable ,Subscription } from 'rxjs';
 import { MenuItem } from '../../../core/services/menu-api.service';
 import * as MenuSelectors from '../store/menu.selectors'
 import * as MenuActions from '../store/menu.actions'
-import { orderActions } from '../../order/store/order.actions';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../store/menu.state';
+import {AppState } from '../store/menu.state';
 import { take } from 'rxjs/operators';
 import { OrderState } from '../../order/store/order.state';
 import { orderActions } from '../../order/store/order.actions';
@@ -55,16 +54,6 @@ export class MenuPageComponent implements OnInit, OnDestroy {
   reload(): void {
     console.log('🔄 Rechargement des plats...');
     this.store.dispatch(MenuActions.loadMenuItems());
-  }
-
-  addToCart(item: MenuItem): void {
-    if (!item.disponible || !item.id) return;
-
-    this.store.dispatch(orderActions.addItem({
-      pl
-      quantity: 1,
-
-    }));
   }
 
   // Méthodes pour naviguer entre les pages

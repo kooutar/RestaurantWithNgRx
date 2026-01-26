@@ -25,8 +25,3 @@ export const changePage = createAction(
   '[Menu] Change Page',
   props<{ page: number }>()
 );
-
-export const updateItemAvailability = createAction(
-  '[Menu] Update Item Availability',
-  props<{ id: string; disponible: boolean }>()
-);
